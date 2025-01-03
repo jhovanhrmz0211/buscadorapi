@@ -1,36 +1,50 @@
 body {
-    background-color: #eee;
-    font-family: 'Roboto', sans-serif;
-    text-align: center;
-    box-sizing: border-box;
+  background-color: #eee;
+  font-family: "Roboto", sans-serif;
+  text-align: center;
+  box-sizing: border-box;
 }
 .buscador {
-    max-width: 1080px;
-    margin: 20px auto;
-    padding: auto;
+  max-width: 1080px;
+  margin: 20px auto;
+  padding: auto;
 }
 .buscador .buscador-input {
-    width: 70%;
-    padding: 10px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    margin-bottom: 10px;
+  width: 70%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-bottom: 10px;
 }
 .buscador .btn-buscador {
-    padding: 10px 20px;
-    font-size: 16px;
-    background-color: #333;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #333;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
 }
 main {
-    max-width: 1080px;
-    height: calc(100vh - 140px);
-    margin: 20px auto 0;
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 5px;
+  max-width: 1080px;
+  height: calc(100vh - 140px);
+  margin: 20px auto 0;
+  padding: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  justify-content: center;
+  overflow-x: scroll;
+  background-color: #fff;
+  border-radius: 5px;
+}
+main .imagen-contenedor {
+    width: 450px;
+    height: 550px;
+    overflow: hidden;
+}
+main .imagen-contenedor img {
+    width: 90%;
+    height: 90%;
 }
