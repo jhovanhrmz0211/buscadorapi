@@ -1,16 +1,27 @@
 const inputBuscador = document.querySelector(".buscador-input");
 const btnBuscar = document.querySelector(".btn-buscador");
 const main = document.querySelector(".main");
+const btnAnterior = document.querySelector(".btn-anterior");
+const btnSiguiente = document.querySelector(".btn-siguiente");
 
-const getImages = async (query) => {
-  const endpoint = `https://api.unsplash.com/search/photos?query=${query}&per_page=10&client_id=jMBn4JdVYyIHAl4cKVZ7ICCtjtZmXHml5iEczZA7BkE`;
+let currentPage = 1; // Página actual
+let currentQuery = ""; // Búsqueda actual
+
+const spinner = document.querySelector(".spinner");
+
+const getImages = async (query, page = 1) => {
+  spinner.classList.remove("hidden"); // Mostrar spinner
+  const endpoint = `https://api.unsplash.com/search/photos?query=${query}&per_page=10&page=${page}&client_id=jMBn4JdVYyIHAl4cKVZ7ICCtjtZmXHml5iEczZA7BkE`;
   try {
     const response = await fetch(endpoint);
     const data = await response.json();
     renderImages(data.results);
-    console.log(data);
+    btnAnterior.disabled = page === 1;
+    btnSiguiente.disabled = page >= 5; // Limita a 5 páginas
   } catch (error) {
     console.error(error);
+  } finally {
+    spinner.classList.add("hidden"); // Ocultar spinner
   }
 };
 
@@ -21,19 +32,63 @@ const renderImages = (images) => {
     containerImg.classList.add("container-img");
 
     const img = document.createElement("img");
-    img.src = image.urls.small;
+    const p = document.createElement("p");
+    p.classList.add("autor");
+
+    // Placeholder de baja calidad
+    img.src = image.urls.thumb; // Imagen pequeña como placeholder
+    // img.dataset.src = image.urls.regular; // Carga diferida
     img.alt = image.alt_description || "Imagen de Unsplash";
+    p.innerHTML = `Autor: ${image.user.name}` || "No ha ingresado su nombre";
+
     containerImg.appendChild(img);
+    containerImg.appendChild(p);
     main.appendChild(containerImg);
   });
+  // Llamar la función para cargar imágenes visibles
+  lazyLoadImages();
 };
 
+const lazyLoadImages = () => {
+  const images = document.querySelectorAll("img[data-src]");
+  const observer = new IntersectionObserver((entries, observer) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        const img = entry.target;
+        img.src = img.dataset.src; // Asignar el src real
+        img.removeAttribute("data-src");
+        observer.unobserve(img);
+      }
+    });
+  });
+
+  images.forEach((img) => observer.observe(img));
+};
+
+// Eventos para los botones de búsqueda
 btnBuscar.addEventListener("click", () => {
-  const textIn = inputBuscador.value;
+  const textIn = inputBuscador.value.trim();
   const busqueda = textIn.replace(/\s/g, "+");
   if (busqueda !== "") {
-    getImages(busqueda);
+    currentQuery = busqueda;
+    currentPage = 1; // Reinicia a la primera página
+    getImages(busqueda, currentPage);
   } else {
-    alert("Introduce una busqueda");
+    alert("Introduce una búsqueda");
+  }
+});
+
+// Eventos para los botones de paginación
+btnAnterior.addEventListener("click", () => {
+  if (currentPage > 1) {
+    currentPage -= 1;
+    getImages(currentQuery, currentPage);
+  }
+});
+
+btnSiguiente.addEventListener("click", () => {
+  if (currentPage < 5) { // Verifica que no pase de la página 5
+    currentPage += 1;
+    getImages(currentQuery, currentPage);
   }
 });

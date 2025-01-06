@@ -6,7 +6,7 @@ body {
 }
 .buscador {
   max-width: 1080px;
-  margin: 20px auto;
+  margin: 5px auto;
   padding: auto;
 }
 .buscador .buscador-input {
@@ -45,6 +45,7 @@ main .container-img {
   width: 200px;
   height: 200px;
   margin: 10px 0;
+  position: relative;
   border-radius: 5px;
   overflow: hidden;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
@@ -53,4 +54,62 @@ main .container-img img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+main .container-img .autor {
+  position: absolute;
+  /* top: 0; */
+  left: 0;
+  bottom: 0;
+  color: #fff;
+  background-color: rgba(0, 0, 0, 0.6);
+  padding: 5px;
+  font-size: .8em;
+  width: 100%;
+  text-align: center;
+  z-index: 10;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+.pagination {
+  margin: 15px auto 5px;
+  text-align: center;
+}
+
+.pagination button {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #333;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 0 5px;
+}
+
+.pagination button:disabled {
+  background-color: #999;
+  cursor: not-allowed;
+}
+.spinner {
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #333;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+  margin: 20px auto;
+}
+
+.spinner.hidden {
+  display: none;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
