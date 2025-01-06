@@ -44,10 +44,54 @@ const renderImages = (images) => {
     containerImg.appendChild(img);
     containerImg.appendChild(p);
     main.appendChild(containerImg);
+
+    // Agregar evento para abrir el modal
+    img.addEventListener("click", () => {
+      modal(image); // Pasa el objeto image al modal
+    });
   });
+
   // Llamar la función para cargar imágenes visibles
   lazyLoadImages();
 };
+
+const modal = (imagen) => {
+  // Crear el overlay
+  const overlay = document.createElement("div");
+  overlay.classList.add("overlay", "visible");
+
+  // Crear el contenedor del modal
+  const modal = document.createElement("div");
+  modal.classList.add("modal", "visible");
+
+  const img = document.createElement("img");
+  const p = document.createElement("p");
+  p.classList.add("autor");
+
+  img.src = imagen.urls.regular;
+  img.alt = imagen.alt_description || "Imagen de Unsplash";
+  p.innerHTML = `Autor: ${imagen.user.name}` || "No ha ingresado su nombre";
+
+  modal.appendChild(img);
+  modal.appendChild(p);
+  document.body.appendChild(overlay);
+  document.body.appendChild(modal);
+
+  // Función para cerrar el modal
+  const cerrarModal = () => {
+    modal.classList.remove("visible");
+    overlay.classList.remove("visible");
+    setTimeout(() => {
+      modal.remove();
+      overlay.remove();
+    }, 300); // Tiempo igual al de la transición en CSS
+  };
+
+  // Cerrar modal al hacer clic en el overlay o en el modal mismo
+  overlay.addEventListener("click", cerrarModal);
+  modal.addEventListener("click", cerrarModal);
+};
+
 
 const lazyLoadImages = () => {
   const images = document.querySelectorAll("img[data-src]");
