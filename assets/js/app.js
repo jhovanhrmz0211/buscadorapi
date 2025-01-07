@@ -37,7 +37,7 @@ const renderImages = (images) => {
 
     // Placeholder de baja calidad
     img.src = image.urls.thumb; // Imagen pequeña como placeholder
-    // img.dataset.src = image.urls.regular; // Carga diferida
+    img.dataset.src = image.urls.regular; // Carga diferida
     img.alt = image.alt_description || "Imagen de Unsplash";
     p.innerHTML = `Autor: ${image.user.name}` || "No ha ingresado su nombre";
 
